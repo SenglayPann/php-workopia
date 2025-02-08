@@ -1,8 +1,10 @@
 <?php
-  echo "Hello, World!";
+  require basePath('components/header.php');
+
+  headComp('Workopia');
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,7 +14,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>Workopia</title>
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100"> -->
     <!-- Nav -->
     <header class="bg-blue-900 text-white p-4">
       <div class="container mx-auto flex justify-between items-center">
@@ -280,5 +282,7 @@
       </div>
     </section>
      
-  </body>
-</html>
+<?php
+  require basePath('components/footer.php');
+  foot();
+?>
