@@ -1,6 +1,7 @@
 <?php
   require '../helper.php';
 
-  require basePath('views/home.view.php');
+  loadView('home');
+  loadView('home1'); // will echo fill not found
   // echo basePath('view/home.php');
 ?>

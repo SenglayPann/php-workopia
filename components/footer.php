@@ -1,10 +1,10 @@
 <?php
   function foot() {
-    echo
-    "
-      </body>
-      </html>
-    ";
-  }
 
+?>
+  </body>
+  </html>
+
+<?php
+  }
 ?>
