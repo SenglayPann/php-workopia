@@ -38,4 +38,10 @@
   function loadComponent($component) {
     return requireFile('components/' . $component . '.php');
   }
+
+  function inspectAndDie($value) {
+    echo '<pre>';
+    die(var_dump($value));
+    echo '</pre>';
+  } 
 ?>
