@@ -1,0 +1,3 @@
+<?=
+  loadView('listings/create');
+?>

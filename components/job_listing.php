@@ -1,5 +1,5 @@
 <?php
-function jobList($jobs) {
+function jobList($jobs, $callBack = null) {
 ?>
   <section>
     <div class="container mx-auto p-4 mt-4">
@@ -32,9 +32,7 @@ function jobList($jobs) {
           </div>
         <?php endforeach; ?>
       </div>
-      <a href="/listings" class="block text-xl text-center">
-        <i class="fa fa-arrow-alt-circle-right"></i> Show All Jobs
-      </a>
+      <?= $callBack ? $callBack() : ""; ?>
     </div>
   </section>
 <?php
