@@ -13,6 +13,13 @@
   }
   
 
+/**
+ * Requires a file relative to the root of the project.
+ *
+ * @param string $path The path to the file.
+ *
+ * @throws RuntimeException If the file does not exist.
+ */
   function requireFile($path) {
 
     $file = basePath($path);
@@ -35,13 +42,40 @@
     return requireFile('views/' . $view . '.view.php');
   }
 
+/**
+ * Loads the full path to a component file.
+ *
+ * @param string $component The name of the component file without extension.
+ *
+ * @return string The full path to the component file.
+ */
   function loadComponent($component) {
     return requireFile('components/' . $component . '.php');
   }
 
+/**
+ * Outputs the value of the given variable and then dies.
+ *
+ * Useful for inspecting a variable quickly without having to
+ * worry about the rest of the code executing.
+ *
+ * @param mixed $value The value to inspect and die on.
+ */
   function inspectAndDie($value) {
     echo '<pre>';
     die(var_dump($value));
     echo '</pre>';
   } 
+
+/**
+ * Loads the full path to a controller file.
+ *
+ * @param string $controller The name of the controller file without extension.
+ *
+ * @return string The full path to the controller file.
+ */
+  function loadController($controller) {
+    return requireFile('controllers/' . $controller . '.php');
+  }
+  
 ?>
