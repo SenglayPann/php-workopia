@@ -40,7 +40,7 @@
  * @return string The full path to the view file.
  */
   function loadView($view, $data = []) {
-    return requireFile('views/' . $view . '.view.php', $data);
+    return requireFile('App/views/' . $view . '.view.php', $data);
   }
 
 /**
@@ -51,7 +51,7 @@
  * @return string The full path to the component file.
  */
   function loadComponent($component) {
-    return requireFile('components/' . $component . '.php');
+    return requireFile('App/components/' . $component . '.php');
   }
 
 /**
@@ -106,9 +106,20 @@
  * @return string The full path to the controller file.
  */
   function loadController($controller) {
-    return requireFile('controllers/' . $controller . '.php');
+    return requireFile('App/controllers/' . $controller . '.php');
   }
   
+
+/**
+ * Formats the given salary as a string with a dollar sign and 
+ * comma-separated thousands.
+ *
+ * @param mixed $salary The salary amount to format. It can be a number 
+ *                      or a string representing a number.
+ *
+ * @return string The formatted salary string with a dollar sign and
+ *                comma-separated thousands.
+ */
 
   function formatSalary($salary) {
     return "$" .number_format(floatval($salary));

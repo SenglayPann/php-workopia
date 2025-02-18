@@ -1,8 +1,8 @@
 <?php
   require '../helper.php';
   // Requiring files
-  require basePath('Database.php');
-  require basePath('Router.php');
+  require basePath('Framework/Database.php');
+  require basePath('Framework/Router.php');
 
   // $dbConfig = require basePath('config/db.php');
   // $db = new Database($dbConfig);

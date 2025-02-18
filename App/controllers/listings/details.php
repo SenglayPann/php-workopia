@@ -1,5 +1,5 @@
 <?php
-  require_once basePath('Router.php');
+  require_once basePath('Framework/Router.php');
   $dbConfig = require basePath('config/db.php');
   $db = new Database($dbConfig);
 
