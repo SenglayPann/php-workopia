@@ -7,7 +7,6 @@
   loadComponent('see_all_jobs');
   loadComponent('buttom_banner');
   loadComponent('footer');
-  require basePath('static_data.php');
 ?>
 
 <?=
@@ -29,7 +28,7 @@
 
   <!-- Job Listings -->
   <?=
-    jobList($jobsData, $callBack = 'seeAllJobs');
+    jobList($listings, $callBack = 'seeAllJobs');
   ?>
 
   <!-- bottom banner  -->

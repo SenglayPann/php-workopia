@@ -6,4 +6,6 @@
   $listings = $db->query('SELECT * FROM listings')->fetchAll();
   // inspectAsJson($listings);
 
-  loadView('home');
+  loadView('home', [
+    'listings' => $listings,
+  ]);

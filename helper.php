@@ -20,11 +20,12 @@
  *
  * @throws RuntimeException If the file does not exist.
  */
-  function requireFile($path) {
+  function requireFile($path, $data = []) {
 
     $file = basePath($path);
 
     if (file_exists($file)) {
+      extract($data);
       require $file;
     } else {
       echo "File named --- $path --- does not exist";
@@ -38,8 +39,8 @@
  *
  * @return string The full path to the view file.
  */
-  function loadView($view) {
-    return requireFile('views/' . $view . '.view.php');
+  function loadView($view, $data = []) {
+    return requireFile('views/' . $view . '.view.php', $data);
   }
 
 /**
@@ -108,5 +109,9 @@
     return requireFile('controllers/' . $controller . '.php');
   }
   
+
+  function formatSalary($salary) {
+    return "$" .number_format(floatval($salary));
+  }
   
 ?>

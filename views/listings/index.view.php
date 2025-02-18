@@ -1,5 +1,27 @@
 <?php
+  loadComponent('header');
+  loadComponent('navbar');
+  loadComponent('banner');
+  loadComponent('job_listing');
+  loadComponent('buttom_banner');
+  loadComponent('footer');
+?>
 
-  echo 'this is listings page';
-
+<?=
+  headComp('workopia/create-job-listing');
+?>
+<?=
+  navbar();
+?>
+<?=
+  banner();
+?>
+<?=
+  jobList($listings);
+?>
+<?=
+  bottomBanner();
+?>
+<?=
+  foot();
 ?>
