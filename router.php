@@ -70,7 +70,7 @@
      */
     public function error($statusCode = 404) {
       http_response_code(404);
-      loadController("errors/$statusCode");
+      return loadController("errors/$statusCode");
       exit;
     }
 
@@ -90,7 +90,7 @@
           // echo '</br>';
           // echo $route['controller'];
           return loadController($route['controller']);
-          return;
+          // return;
         }
       }
 

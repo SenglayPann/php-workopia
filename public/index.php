@@ -1,6 +1,11 @@
 <?php
   require '../helper.php';
+
+  $dbConfig =  require basePath('config/db.php');
+
+  require basePath('Database.php');
   
+  $connection = new Database($dbConfig);
   
   require basePath('Router.php');
   
