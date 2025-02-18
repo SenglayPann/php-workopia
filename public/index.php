@@ -16,7 +16,7 @@
   require basePath('routes.php');
   
   // getting the request uri and http method
-  $uri = $_SERVER['REQUEST_URI'];
+  $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); // parse_url() returns the path part of the URL
   $method = $_SERVER['REQUEST_METHOD'];
   
   // Routing

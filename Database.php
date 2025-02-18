@@ -20,10 +20,15 @@ class database {
     }
   }
   
-  public function query($query) {
+  public function query($query, $params = []) {
     try {
       $statement = $this->connection->prepare($query);
-      $statement->execute();
+
+      foreach ($params as $param => $value) {
+        $statement->bindValue(":" . $param, $value);
+      }
+      // inspect($statement);
+      $statement->execute($params);
       return $statement;
     } catch (PDOException $e) {
       throw new Exception("Failed to execute query: " . $e->getMessage());
