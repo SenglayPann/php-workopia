@@ -54,6 +54,36 @@
   }
 
 /**
+ * Outputs the value of the given variable to the page.
+ *
+ * Useful for inspecting a variable quickly without having to
+ * worry about the rest of the code executing.
+ *
+ * @param mixed $value The value to inspect.
+ */
+  function inspect($value)
+  {
+    echo "<pre>";
+    echo var_dump($value);
+    echo "</pre>";
+  }
+
+/**
+ * Outputs the value of the given variable to the page.
+ *
+ * Useful for inspecting a variable quickly without having to
+ * worry about the rest of the code executing.
+ *
+ * @param mixed $value The value to inspect.
+ */
+  function inspectAsJson($value)
+  {
+    echo "<pre>";
+    echo json_encode($value, JSON_PRETTY_PRINT);
+    echo "</pre>";
+  }
+
+/**
  * Outputs the value of the given variable and then dies.
  *
  * Useful for inspecting a variable quickly without having to
@@ -77,5 +107,6 @@
   function loadController($controller) {
     return requireFile('controllers/' . $controller . '.php');
   }
+  
   
 ?>

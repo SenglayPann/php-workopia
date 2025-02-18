@@ -19,4 +19,14 @@ class database {
       echo "Failed to connect to database: " . $e->getMessage();
     }
   }
+  
+  public function query($query) {
+    try {
+      $statement = $this->connection->prepare($query);
+      $statement->execute();
+      return $statement;
+    } catch (PDOException $e) {
+      throw new Exception("Failed to execute query: " . $e->getMessage());
+    }
+  }
 }
