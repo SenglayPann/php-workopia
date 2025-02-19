@@ -13,12 +13,15 @@
      * @param string $controller The controller for the route.
      * @return void
      */
-    public function registerRoute($method, $uri, $controller) {
+    public function registerRoute($method, $uri, $action) {
+
+      list($controller, $controllerMethod) = explode('@', $action);
     
       $this->routes[] = [
         'method' => $method,
         'uri' => $uri,
         'controller' => $controller,
+        'controllerMethod' => $controllerMethod
       ];
     }
 
@@ -88,11 +91,15 @@
     public function route($uri, $method) {
       foreach ($this->routes as $route) {
         if ($route['uri'] === $uri && $route['method'] === $method) {
-          // echo $uri;
-          // echo '</br>';
-          // echo $route['controller'];
-          return loadController($route['controller']);
-          // return;
+
+          // exstract controller and action method 
+          $controller = "App\\Controllers\\" . $route['controller'];
+          $controllerMethod = $route['controllerMethod'];
+          
+          // instantiate controller and call the action method
+          $instanceController = new $controller();
+          $instanceController->$controllerMethod();
+          return;
         }
       }
 
