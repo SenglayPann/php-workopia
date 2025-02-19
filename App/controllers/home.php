@@ -1,6 +1,6 @@
 <?php
   $dbConfig = require basePath('config/db.php');
-  $db = new Database($dbConfig);
+  $db = new Framework\Database($dbConfig);
 
   $listings = $db->query('SELECT * FROM listings')->fetchAll();
   // inspectAsJson($listings);
