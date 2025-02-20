@@ -2,6 +2,9 @@
 
   namespace Framework;
 
+  use App\Controllers\ErrorsController;
+
+
   class Router {
     Protected $routes = [];
 
@@ -66,21 +69,6 @@
     }
 
     /**
-     * Sets the HTTP response code to the specified status code and loads the
-     * corresponding error controller.
-     *
-     * @param int $statusCode The HTTP status code to respond with.
-     *
-     * @return void
-     */
-    public function error($statusCode = 404) {
-      http_response_code(404);
-      return loadController("errors/$statusCode");
-      exit;
-    }
-
-
-    /**
      * Routes the specified URI and HTTP method to the appropriate controller.
      *
      * @param string $uri The URI to route.
@@ -103,7 +91,7 @@
         }
       }
 
-      $this->error();
+      ErrorsController::notFound();
     }
   }
 ?>
