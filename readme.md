@@ -9,3 +9,4 @@
 - [Basic routing](https://github.com/SenglayPann/php-workopia/tree/basic-routing)
 - [Advanced Routing](https://github.com/SenglayPann/php-workopia/tree/advance-routing)
 - [Database Interaction](https://github.com/SenglayPann/php-workopia/tree/database-interaction)
+- [Project structure and routing enhancement](https://github.com/SenglayPann/php-workopia/tree/project-structure-enhancement)
