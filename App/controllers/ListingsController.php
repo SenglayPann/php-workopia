@@ -2,7 +2,6 @@
   namespace App\Controllers;
   use Framework\Database;
   use App\Controllers\ErrorsController;
-use Error;
 
   class ListingsController {
     public $dbConfig;
