@@ -85,7 +85,7 @@
         // inspect($uriSegements);
         
         // if the number of uri segements === number of route segements
-        if (count($uriSegements) === count($routeSegements)) {
+        if (count($uriSegements) === count($routeSegements) && $route['method'] === $method) {
           // inspect($routeSegements);
           $match = true;
           $params = [];

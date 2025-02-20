@@ -142,4 +142,11 @@
       }
     });
   }
+
+  function sanitize($dirty) {
+    $dirty = trim($dirty);
+    $sanitized = filter_var($dirty, FILTER_SANITIZE_SPECIAL_CHARS);
+
+    return $sanitized;
+  }
 ?>

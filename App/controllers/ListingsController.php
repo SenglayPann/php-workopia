@@ -71,4 +71,20 @@
     public function create() {
       loadView('listings/create');
     }
+
+    public function store() {
+      
+      $allowedFields = [
+        'title', 'description', 'salary', 'requirement', 'benefits', 'address', 'city', 'tags', 'company', 'state', 'phone', 'email'
+      ];
+
+      // intersect the $_POST array with the allowed fields
+      $newListingsData = array_intersect_key($_POST, array_flip($allowedFields));
+
+      $newListingsData['user_id'] = 1;
+
+      $sanitizedData = array_map('sanitize', $newListingsData);
+
+      inspectAndDie($sanitizedData);
+    }
   }
