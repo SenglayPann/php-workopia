@@ -1,6 +1,8 @@
 <?php
   namespace App\Controllers;
-  use Framework\Database, Framework\Router;
+  use Framework\Database;
+  use App\Controllers\ErrorsController;
+use Error;
 
   class ListingsController {
     public $dbConfig;
@@ -45,23 +47,14 @@
      *
      * @return void
      */
-    public function details() {
-      $id = $_GET['id'] ?? null;
-      $router = new Router();
-
-      // inspect($_GET['id']);
-
-      if (!isset($id)) {
-        $router->error();
-        exit;
-      }
-
-      $params = [
-        'id' => $id,
-      ];
+    public function details($params) {
 
       $job = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
       // inspectAsJson($listings);
+
+      if (!$job) {
+        ErrorsController::notFound('there is not job with this id');
+      }
 
       loadView('listings/details', [
         'job' => $job,

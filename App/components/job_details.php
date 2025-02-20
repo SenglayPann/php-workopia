@@ -1,5 +1,6 @@
 <?php
 function jobDetails($job) {
+  // inspectAndDie($job);
 ?>
   <section class="container mx-auto p-4 mt-4">
   <div class="rounded-lg shadow-md bg-white p-3">

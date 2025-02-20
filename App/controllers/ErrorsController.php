@@ -28,6 +28,7 @@
         'errorCode' => '404',
         'message' => $message
       ]);
+      exit;
     }
     /**
      * Shows a 403 error page when the user is not authorized to access a page.
@@ -41,6 +42,7 @@
         'errorCode' => '403',
         'message' => $message
       ]);
+      exit;
     }
     
   }

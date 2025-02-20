@@ -77,20 +77,52 @@
      * @return void
      */
     public function route($uri, $method) {
-      foreach ($this->routes as $route) {
-        if ($route['uri'] === $uri && $route['method'] === $method) {
+      $uriSegements = explode('/', trim($uri, '/'));
 
-          // exstract controller and action method 
-          $controller = "App\\Controllers\\" . $route['controller'];
-          $controllerMethod = $route['controllerMethod'];
-          
-          // instantiate controller and call the action method
-          $instanceController = new $controller();
-          $instanceController->$controllerMethod();
-          return;
+      foreach ($this->routes as $route) {
+        $routeSegements = explode('/', trim($route['uri'], '/'));
+
+        // inspect($uriSegements);
+        
+        // if the number of uri segements === number of route segements
+        if (count($uriSegements) === count($routeSegements)) {
+          // inspect($routeSegements);
+          $match = true;
+          $params = [];
+
+          // loop through to see if either each segement is matched or is a wildcard
+          for ($i = 0; $i < count($routeSegements); $i++) {
+
+            // echo $i;
+
+            // figure out the uri segement doesn't match the route segement and is also not a wildcard (completely mismatched)
+            if ($uriSegements[$i] !== $routeSegements[$i] && !preg_match('/\{(.+?)\}/', $routeSegements[$i])) {
+              $match = false;
+              break;
+            }
+
+            // 
+            if (preg_match('/\{(.+?)\}/', $routeSegements[$i], $matches)) {
+              // inspect($matches);
+              $params[$matches[1]] = $uriSegements[$i];
+              // inspectAndDie($matches);
+            }
+          }
+
+          if ($match) {
+              // exstract controller and action method 
+              $controller = "App\\Controllers\\" . $route['controller'];
+              $controllerMethod = $route['controllerMethod'];
+              
+              // instantiate controller and call the action method
+              $instanceController = new $controller();
+              $instanceController->$controllerMethod($params);
+              return;
+          }
+          // inspect($params);
         }
       }
-
+      // return notFound page in case no route is matched
       ErrorsController::notFound();
     }
   }
