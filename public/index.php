@@ -1,8 +1,10 @@
 <?php
+  require __DIR__ . '/../vendor/autoload.php';
   require '../helper.php';
+
+  use Framework\Router;
   // Requiring files
-  require basePath('Framework/Database.php');
-  require basePath('Framework/Router.php');
+  // autoLoadFrameworks();
 
   // $dbConfig = require basePath('config/db.php');
   // $db = new Database($dbConfig);

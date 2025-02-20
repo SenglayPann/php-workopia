@@ -1,5 +1,10 @@
 <?php
 
+  namespace Framework;
+
+  use App\Controllers\ErrorsController;
+
+
   class Router {
     Protected $routes = [];
 
@@ -11,12 +16,15 @@
      * @param string $controller The controller for the route.
      * @return void
      */
-    public function registerRoute($method, $uri, $controller) {
+    public function registerRoute($method, $uri, $action) {
+
+      list($controller, $controllerMethod) = explode('@', $action);
     
       $this->routes[] = [
         'method' => $method,
         'uri' => $uri,
         'controller' => $controller,
+        'controllerMethod' => $controllerMethod
       ];
     }
 
@@ -61,21 +69,6 @@
     }
 
     /**
-     * Sets the HTTP response code to the specified status code and loads the
-     * corresponding error controller.
-     *
-     * @param int $statusCode The HTTP status code to respond with.
-     *
-     * @return void
-     */
-    public function error($statusCode = 404) {
-      http_response_code(404);
-      return loadController("errors/$statusCode");
-      exit;
-    }
-
-
-    /**
      * Routes the specified URI and HTTP method to the appropriate controller.
      *
      * @param string $uri The URI to route.
@@ -84,17 +77,53 @@
      * @return void
      */
     public function route($uri, $method) {
+      $uriSegements = explode('/', trim($uri, '/'));
+
       foreach ($this->routes as $route) {
-        if ($route['uri'] === $uri && $route['method'] === $method) {
-          // echo $uri;
-          // echo '</br>';
-          // echo $route['controller'];
-          return loadController($route['controller']);
-          // return;
+        $routeSegements = explode('/', trim($route['uri'], '/'));
+
+        // inspect($uriSegements);
+        
+        // if the number of uri segements === number of route segements
+        if (count($uriSegements) === count($routeSegements)) {
+          // inspect($routeSegements);
+          $match = true;
+          $params = [];
+
+          // loop through to see if either each segement is matched or is a wildcard
+          for ($i = 0; $i < count($routeSegements); $i++) {
+
+            // echo $i;
+
+            // figure out the uri segement doesn't match the route segement and is also not a wildcard (completely mismatched)
+            if ($uriSegements[$i] !== $routeSegements[$i] && !preg_match('/\{(.+?)\}/', $routeSegements[$i])) {
+              $match = false;
+              break;
+            }
+
+            // 
+            if (preg_match('/\{(.+?)\}/', $routeSegements[$i], $matches)) {
+              // inspect($matches);
+              $params[$matches[1]] = $uriSegements[$i];
+              // inspectAndDie($matches);
+            }
+          }
+
+          if ($match) {
+              // exstract controller and action method 
+              $controller = "App\\Controllers\\" . $route['controller'];
+              $controllerMethod = $route['controllerMethod'];
+              
+              // instantiate controller and call the action method
+              $instanceController = new $controller();
+              $instanceController->$controllerMethod($params);
+              return;
+          }
+          // inspect($params);
         }
       }
-
-      $this->error();
+      // return notFound page in case no route is matched
+      ErrorsController::notFound();
     }
   }
 ?>

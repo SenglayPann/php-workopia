@@ -29,6 +29,7 @@
       require $file;
     } else {
       echo "File named --- $path --- does not exist";
+      // die();
     }
   }
 
@@ -125,4 +126,20 @@
     return "$" .number_format(floatval($salary));
   }
   
+/**
+ * Automatically loads any PHP files in the Framework directory
+ * that are referenced elsewhere in the codebase.
+ *
+ * @return void
+ */
+  function autoLoadFrameworks() {
+    spl_autoload_register(function ($class) {
+      $file = basePath('Framework/' . $class . '.php');
+      if (file_exists($file)) {
+        require $file;
+      } else {
+        echo "File named --- $class --- does not exist";
+      }
+    });
+  }
 ?>
