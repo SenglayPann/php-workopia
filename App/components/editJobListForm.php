@@ -1,16 +1,17 @@
 <?php
-  function createJobListingForm($errors, $filledData) {
+  function editJobListingForm($errors, $filledData) {
     // inspect($filledData);
 ?>
 <!-- Post a Job Form Box -->
 <section class="flex justify-center container max-w-2xl mx-auto items-center mt-20">
   <div class="bg-white p-8 rounded-lg shadow-md w-full md:w-600 mx-6">
-    <h2 class="text-4xl text-center font-bold mb-4">Create Job Listing</h2>
+    <h2 class="text-4xl text-center font-bold mb-4">Edit Job Listing</h2>
     <!-- <div class="message bg-red-100 p-3 my-3">This is an error message.</div>
     <div class="message bg-green-100 p-3 my-3">
       This is a success message.
     </div> -->
-    <form method="POST" action="/listings/edit/{id}">
+    <form method="POST">
+      <input type="text" name="_method" value="PUT" hidden>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
         Job Info
       </h2>

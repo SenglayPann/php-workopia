@@ -10,7 +10,7 @@ function jobDetails($job) {
         Back To Listings
       </a>
       <div class="flex space-x-4 ml-4">
-        <a href="/edit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
+        <a href="/listings/edit/<?= $job->id ?>" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
         <!-- Delete Form -->
         <form method="POST">
           <button name="_method" value="DELETE" type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">Delete</button>

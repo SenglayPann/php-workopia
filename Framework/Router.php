@@ -85,6 +85,8 @@
         $method = strtoupper($_POST['_method']);
       }
 
+      // inspectAndDie($_POST);
+
       $uriSegements = explode('/', trim($uri, '/'));
 
       foreach ($this->routes as $route) {

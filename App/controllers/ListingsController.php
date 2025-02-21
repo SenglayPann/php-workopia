@@ -2,6 +2,7 @@
   namespace App\Controllers;
   use Framework\Database;
   use App\Controllers\ErrorsController;
+  use Framework\Validation;
 
   class ListingsController {
     public $dbConfig;
@@ -72,16 +73,13 @@
       loadView('listings/create');
     }
 
-    public function store() {
-      
+    function sanitizeData() {
       $allowedFields = [
         'title', 'description', 'salary', 'requirements', 'benefits', 'address', 'city', 'tags', 'company', 'state', 'phone', 'email'
       ];
 
       // intersect the $_POST array with the allowed fields
       $newListingsData = array_intersect_key($_POST, array_flip($allowedFields));
-
-      $newListingsData['user_id'] = 0;
 
       // sanitize the data avoid SQL injection
       $sanitizedData = array_map('sanitize', $newListingsData);
@@ -96,10 +94,17 @@
 
       // check if the required fields are empty
       foreach ($requireFields as $field) {
-        if (empty($sanitizedData[$field])) {
+        if (empty($sanitizedData[$field]) || !Validation::string($sanitizedData[$field])) {
           $errors[$field] = ucfirst($field) . ' is required';
         }
       }
+
+      return [$errors, $sanitizedData];
+    }
+
+    public function store() {
+      
+      list($errors, $sanitizedData) = $this->sanitizeData();
 
       if (!empty($errors)) {
         // go back to the form
@@ -110,6 +115,8 @@
         ]);
         return;
       }
+
+      $sanitizedData['user_id'] = 0;
 
       // insert the data into the database
 
@@ -142,6 +149,66 @@
       $_SESSION['success_message'] = 'Job deleted successfully';
 
       $this->db->query("DELETE FROM listings WHERE id = :id", $params);
+
+      redirect('/listings');
+    }
+
+    function edit($params) {
+
+
+      $job = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
+      // inspectAsJson($listings);
+
+      if (!$job) {
+        ErrorsController::notFound('there is not job with this id');
+      }
+
+      // inspectAndDie($job);
+
+      loadView('listings/edit', [
+        'filledData' => (array) $job,
+      ]);
+    }
+
+    function update($params) {
+      list($errors, $sanitizedData) = $this->sanitizeData();
+
+      if (!empty($errors)) {
+        // go back to the form
+
+        loadView('listings/edit', [
+          'errors' => $errors,
+          'filledData' => $sanitizedData
+        ]);
+        return;
+      }
+
+      
+
+      $id = $params['id'];
+
+      $params = [
+        'id' => $id
+      ];
+
+      $updateString = '';
+
+      foreach ($sanitizedData as $key => $value) {
+        $updateString .= "$key = :$key, ";
+      }
+
+      $updateString = rtrim($updateString, ', ');
+
+      // inspectAndDie($updateString);
+
+      $sanitizedData['id'] = $id;
+
+      // inspect($fieldsString);
+      // inspectAndDie($valuesString);
+
+      $this->db->query("UPDATE listings SET $updateString WHERE id = :id", $sanitizedData);
+
+      $_SESSION['success_message'] = 'Job updated successfully';
 
       redirect('/listings');
     }
