@@ -77,6 +77,14 @@
      * @return void
      */
     public function route($uri, $method) {
+
+      // check for _method input
+      if ($method === 'POST' && isset($_POST['_method'])) {
+
+        // override the actual request method
+        $method = strtoupper($_POST['_method']);
+      }
+
       $uriSegements = explode('/', trim($uri, '/'));
 
       foreach ($this->routes as $route) {

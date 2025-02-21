@@ -125,4 +125,22 @@
 
       redirect('/listings');
     }
+
+    function destroy($params) {
+      $id = $params['id'];
+
+      $params = [
+        'id' => $id
+      ];
+
+      $job = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
+
+      if (!$job) {
+        ErrorsController::notFound('there is not job with this id');
+      }
+
+      $this->db->query("DELETE FROM listings WHERE id = :id", $params);
+
+      redirect('/listings');
+    }
   }
