@@ -85,6 +85,32 @@
 
       $sanitizedData = array_map('sanitize', $newListingsData);
 
-      inspectAndDie($sanitizedData);
+      $requireFields = [
+        'title', 'description', 'email', 'city', 'state'
+      ];
+
+      $errors = [];
+
+      foreach ($requireFields as $field) {
+        if (empty($sanitizedData[$field])) {
+          $errors[$field] = ucfirst($field) . ' is required';
+        }
+      }
+
+      if (!empty($errors)) {
+        // go back to the form
+
+        loadView('listings/create', [
+          'errors' => $errors,
+          'filledData' => $sanitizedData
+        ]);
+        return;
+      } else {
+        // store data and go to listings
+      }
+
+      
+
+      // inspectAndDie($sanitizedData);
     }
   }

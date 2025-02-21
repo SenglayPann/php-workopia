@@ -17,7 +17,7 @@
   banner();
 ?>
 <?=
-  createJobListingForm();
+  createJobListingForm($errors ?? [], $filledData ?? []);
 ?>
 <?=
   bottomBanner();
