@@ -139,6 +139,8 @@
         ErrorsController::notFound('there is not job with this id');
       }
 
+      $_SESSION['success_message'] = 'Job deleted successfully';
+
       $this->db->query("DELETE FROM listings WHERE id = :id", $params);
 
       redirect('/listings');
