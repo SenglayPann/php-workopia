@@ -20,21 +20,21 @@ function jobDetails($job) {
     </div>
 
     <div class="p-4">
-      <h2 class="text-xl font-semibold"><?= $job->title ?></h2>
+      <h2 class="text-xl font-semibold"><?= $job->title ?? '' ?></h2>
       <p class="text-gray-700 text-lg mt-2">
-        <?= $job->description ?>
+        <?= $job->description ?? '' ?>
       </p>
       <ul class="my-4 bg-gray-100 p-4">
-        <li class="mb-2"><strong>Salary:</strong> <?= formatSalary($job->salary) ?></li>
+        <li class="mb-2"><strong>Salary:</strong> <?= formatSalary($job->salary ?? '') ?></li>
         <li class="mb-2">
-          <strong>Location:</strong> <?= $job->address ?>
+          <strong>Location:</strong> <?= $job->address ?? '' ?>
           <span
             class="text-xs bg-blue-500 text-white rounded-full px-2 py-1 ml-2"
             >Local</span
           >
         </li>
         <li class="mb-2">
-          <strong>Tags:</strong> <span><?= $job->tags ?></span>,
+          <strong>Tags:</strong> <span><?= $job->tags ?? '' ?></span>,
           <!-- <span>Coding</span> -->
         </li>
       </ul>
@@ -49,10 +49,10 @@ function jobDetails($job) {
       Job Requirements
     </h3>
     <p>
-      <?= $job->requirement ?>
+      <?= $job->requirements ?? 'No requirements specified' ?>
     </p>
     <h3 class="text-lg font-semibold mt-4 mb-2 text-blue-500">Benefits</h3>
-    <p><?= $job->benefits ?></p>
+    <p><?= $job->benefits ?? 'No benefits specified' ?></p>
   </div>
   <p class="my-5">
     Put "Job Application" as the subject of your email and attach your

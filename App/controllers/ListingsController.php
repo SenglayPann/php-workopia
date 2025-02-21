@@ -75,15 +75,18 @@
     public function store() {
       
       $allowedFields = [
-        'title', 'description', 'salary', 'requirement', 'benefits', 'address', 'city', 'tags', 'company', 'state', 'phone', 'email'
+        'title', 'description', 'salary', 'requirements', 'benefits', 'address', 'city', 'tags', 'company', 'state', 'phone', 'email'
       ];
 
       // intersect the $_POST array with the allowed fields
       $newListingsData = array_intersect_key($_POST, array_flip($allowedFields));
 
-      $newListingsData['user_id'] = 1;
+      $newListingsData['user_id'] = 0;
 
+      // sanitize the data avoid SQL injection
       $sanitizedData = array_map('sanitize', $newListingsData);
+
+      $sanitizedData = array_map(fn($value) => $value === '' || null ? null : $value, $sanitizedData);
 
       $requireFields = [
         'title', 'description', 'email', 'city', 'state'
@@ -91,6 +94,7 @@
 
       $errors = [];
 
+      // check if the required fields are empty
       foreach ($requireFields as $field) {
         if (empty($sanitizedData[$field])) {
           $errors[$field] = ucfirst($field) . ' is required';
@@ -105,12 +109,20 @@
           'filledData' => $sanitizedData
         ]);
         return;
-      } else {
-        // store data and go to listings
       }
 
-      
+      // insert the data into the database
 
-      // inspectAndDie($sanitizedData);
+      $fields = array_keys($sanitizedData);
+
+      $fieldsString =implode(', ', $fields);
+      $valuesString = implode(', ', array_map(fn($value) => ":$value", $fields));
+
+      // inspect($fieldsString);
+      // inspectAndDie($valuesString);
+
+      $this->db->query("INSERT INTO listings ($fieldsString) VALUES ($valuesString)", $sanitizedData);
+
+      redirect('/listings');
     }
   }

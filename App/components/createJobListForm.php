@@ -1,6 +1,6 @@
 <?php
   function createJobListingForm($errors, $filledData) {
-    inspect($errors);
+    // inspect($filledData);
 ?>
 <!-- Post a Job Form Box -->
 <section class="flex justify-center container max-w-2xl mx-auto items-center mt-20">
@@ -21,7 +21,7 @@
           name="title"
           placeholder="Job Title"
           class=" <?= isset($errors['title']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['title'] ?? ''; ?>"
+          value="<?= $filledData['title'] ?? ''; ?>"
         />
       </div>
       <div class="mb-4">
@@ -30,7 +30,7 @@
           name="description"
           placeholder="Job Description"
           class="<?= isset($errors['title']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-        ><?php $filledData['description'] ?? ''; ?></textarea>
+        ><?= $filledData['description'] ?? ''; ?></textarea>
       </div>
       <div class="mb-4">
         <div class="<?= isset($errors['salary']) ? 'bg-red-100 text-red-500 px-2 py-1 rounded inline-block mb-2' : '' ?>"><?= ( $errors['salary'] ?? '') ?></div>
@@ -39,7 +39,7 @@
           name="salary"
           placeholder="Annual Salary"
           class="<?= isset($errors['salary']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['salary'] ?? ''; ?>"   
+          value="<?= $filledData['salary'] ?? ''; ?>"   
         />
       </div>
       <div class="mb-4">
@@ -49,7 +49,7 @@
           name="requirements"
           placeholder="Requirements"
           class="<?= isset($errors['requirements']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['requirements'] ?? ''; ?>"
+          value="<?= $filledData['requirements'] ?? ''; ?>"
         />
       </div>
       <div class="mb-4">
@@ -59,7 +59,17 @@
           name="benefits"
           placeholder="Benefits"
           class="<?= isset($errors['benefits']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['benefits'] ?? ''; ?>"
+          value="<?= $filledData['benefits'] ?? ''; ?>"
+        />
+      </div>
+      <div class="mb-4">
+        <div class="<?= isset($errors['tags']) ? 'bg-red-100 text-red-500 px-2 py-1 rounded inline-block mb-2' : '' ?>"><?= ( $errors['tags'] ?? '') ?></div>
+        <input
+          type="text"
+          name="tags"
+          placeholder="tags"
+          class="<?= isset($errors['tags']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
+          value="<?= $filledData['tags'] ?? 'No Tags'; ?>"
         />
       </div>
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-500">
@@ -72,7 +82,7 @@
           name="company"
           placeholder="Company Name"
           class="<?= isset($errors['company']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['company'] ?? ''; ?>"
+          value="<?= $filledData['company'] ?? ''; ?>"
         />
       </div>
       <div class="mb-4">
@@ -82,7 +92,7 @@
           name="address"
           placeholder="Address"
           class="<?= isset($errors['address']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['address'] ?? ''; ?>"
+          value="<?= $filledData['address'] ?? ''; ?>"
           />
         </div>
       <div class="mb-4">
@@ -92,7 +102,7 @@
           name="city"
           placeholder="City"
           class="<?= isset($errors['city']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['city'] ?? ''; ?>"
+          value="<?= $filledData['city'] ?? ''; ?>"
         />
       </div>
       <div class="mb-4">
@@ -102,7 +112,7 @@
           name="state"
           placeholder="State"
           class="<?= isset($errors['state']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['state'] ?? ''; ?>"
+          value="<?= $filledData['state'] ?? ''; ?>"
         />
       </div>
       <div class="mb-4">
@@ -112,7 +122,7 @@
           name="phone"
           placeholder="Phone"
           class="<?= isset($errors['phone']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['phone'] ?? ''; ?>"
+          value="<?= $filledData['phone'] ?? ''; ?>"
         />
       </div>
       <div class="mb-4">
@@ -122,7 +132,7 @@
           name="email"
           placeholder="Email Address For Applications"
           class="<?= isset($errors['email']) ? 'outline outline-red-500 outline-1': ''?> w-full px-4 py-2 border rounded focus:outline-none"
-          value="<?php $filledData['email'] ?? ''; ?>"
+          value="<?= $filledData['email'] ?? ''; ?>"
         />
       </div>
       <button

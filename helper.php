@@ -149,4 +149,16 @@
 
     return $sanitized;
   }
+
+/**
+ * Redirects to the given URL.
+ *
+ * @param string $location The URL to redirect to.
+ *
+ * @return void
+ */
+  function redirect($location) {
+    header('Location: ' . $location);
+    exit;
+  }
 ?>
