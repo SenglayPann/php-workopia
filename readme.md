@@ -6,7 +6,8 @@
 # There are alot of refactor in this project:
 - To make this easy to check, here are the important points that make big refactor:
 
-- [Basic routing](https://github.com/SenglayPann/php-workopia/tree/basic-routing)
+- [Basic Routing](https://github.com/SenglayPann/php-workopia/tree/basic-routing)
 - [Advanced Routing](https://github.com/SenglayPann/php-workopia/tree/advance-routing)
 - [Database Interaction](https://github.com/SenglayPann/php-workopia/tree/database-interaction)
-- [Project structure and routing enhancement](https://github.com/SenglayPann/php-workopia/tree/project-structure-enhancement)
+- [Project Structure and Routing Enhancement](https://github.com/SenglayPann/php-workopia/tree/project-structure-enhancement)
+- [Crud operation](https://github.com/SenglayPann/php-workopia/tree/full-crud-operation)
