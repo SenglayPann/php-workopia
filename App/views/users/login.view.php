@@ -9,7 +9,7 @@
 ?>
 
 <?=
-  loginForm();
+  loginForm($errors ?? [], $filledData ?? [], $notice ?? null);
 ?>
 
 <?=

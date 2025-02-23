@@ -27,7 +27,7 @@ class UsersController {
    *
    * @return array An array containing the errors and the sanitized data
    */
-  function sanitizeData() {
+  function sanitizeRegisterData() {
     $allowedFields = ['name', 'email', 'password', 'confirmPassword', 'city', 'state'];
 
     // intersect the $_POST array with the allowed fields
@@ -52,6 +52,35 @@ class UsersController {
     // check if the email is valid
     if (!Validation::email($sanitizedData['email'])) {
       $errors['email'] = 'Email is invalid';
+    }
+
+    return [$errors, $sanitizedData];
+  }
+
+  /**
+   * Sanitizes the data from the login form and checks if the
+   * required fields are empty.
+   *
+   * @return array An array containing the errors and the sanitized data
+   */
+  public function senitizeLoginData() {
+    $allowedFields = ['email', 'password'];
+
+    // intersect the $_POST array with the allowed fields
+    $loginData = array_intersect_key($_POST, array_flip($allowedFields));
+
+    // sanitize the data avoid SQL injection
+    $sanitizedData = array_map('sanitize', $loginData);
+
+    $requireFields = ['email', 'password'];
+
+    $errors = [];
+
+    // check if the required fields are empty
+    foreach ($requireFields as $field) {
+      if (empty($sanitizedData[$field]) || !Validation::string($sanitizedData[$field])) {
+        $errors[$field] = ucfirst($field) . ' is required';
+      }
     }
 
     return [$errors, $sanitizedData];
@@ -90,75 +119,56 @@ class UsersController {
    * @return void
    */
   public function signup() {
+    list($errors, $sanitizedData) = $this->sanitizeRegisterData();
 
-    list($errors, $sanitizedData) =$this->sanitizeData();
-    $notice = '';
-
-    // check if the email is valid
     if (!Validation::email($sanitizedData['email'])) {
       $errors['email'] = 'Email is invalid';
     }
 
-    // check if the password and confirm_password match
     if ($sanitizedData['password'] !== $sanitizedData['confirmPassword']) {
       $errors['confirmPassword'] = 'Passwords do not match';
     }
 
-    $filledData = $sanitizedData;
-
-    // check if email is already in use or not verified
-    $user = $this->db->query('SELECT * FROM users WHERE email = :email', ['email' => $sanitizedData['email']])->fetch();
-
-    if ($user && $user->is_verified) {
-      $notice = 'Email is already in use. Please login';
-      $errors['email'] = 'Email is already in use';
-      loadView('users/create', ['errors' => $errors, 'filledData' => $filledData, 'notice' => $notice]);
-      return;
-    }
-
     if (!empty($errors)) {
-      loadView('users/create', ['errors' => $errors, 'filledData' => $filledData]);
+      loadView('users/create', ['errors' => $errors, 'filledData' => $sanitizedData]);
       return;
     }
 
-    // generate a verification verification_token
-    $verification_token = bin2hex(random_bytes(32));
+    $existingUser = $this->db->query('SELECT * FROM users WHERE email = :email', ['email' => $sanitizedData['email']])->fetch();
 
-    // set verification_token expiration time
+    if ($existingUser && $existingUser->is_verified) {
+      $errors['email'] = 'Email is already in use';
+      loadView('users/create', ['errors' => $errors, 'filledData' => $sanitizedData]);
+      return;
+    }
+
+    $verificationToken = bin2hex(random_bytes(32));
     $tokenExpires = getTimestamp(5);
-    $sanitizedData['token_expires'] = $tokenExpires;
-    $to = $sanitizedData['email'];
 
-    if (!$user) {
-      // hash the password
+    if (!$existingUser) {
       $sanitizedData['password'] = password_hash($sanitizedData['password'], PASSWORD_DEFAULT);
+      $sanitizedData['verification_token'] = $verificationToken;
+      $sanitizedData['token_expires'] = $tokenExpires;
 
-      $sanitizedData['verification_token'] = $verification_token;
-
-
-      // unset the confirm password field
       unset($sanitizedData['confirmPassword']);
 
-      // insert the user into the database
       $this->db->query('INSERT INTO users (name, email, password, city, state, verification_token, token_expires) VALUES (:name, :email, :password, :city, :state, :verification_token, :token_expires)', $sanitizedData);
 
-      // send verification email
-      Mail::sendConfirmationEmail($to, $verification_token);
+      Mail::sendConfirmationEmail($sanitizedData['email'], $verificationToken);
 
       loadView('success/200', ['message' => 'Your registration was successfully submitted', 'tip' => 'Please check your email to verify your account']);
-
       return;
     }
 
-    // update the user's account with the new verification_token and token_expires
-    if ($user && !$user->is_verified) {
-      $this->db->query('UPDATE users SET verification_token = :verification_token, token_expires = :token_expires WHERE email = :email', ['verification_token' => $verification_token, 'token_expires' => $tokenExpires, 'email' => $sanitizedData['email']]);
-      // send verification email
-      Mail::sendConfirmationEmail($to, $verification_token);
-      //
-      loadView('success/200', ['message' => 'Your registration was successfully submitted', 'tip' => 'Please check your email to verify your account']);
-    }
+    if ($existingUser && !$existingUser->is_verified) {
+      if (expired($existingUser->token_expires, getTimestamp())) {
+        $this->db->query('UPDATE users SET verification_token = :verification_token, token_expires = :token_expires WHERE email = :email', ['verification_token' => $verificationToken, 'token_expires' => $tokenExpires, 'email' => $existingUser->email]);
 
+        Mail::sendConfirmationEmail($sanitizedData['email'], $verificationToken);
+      }
+
+      loadView('success/200', ['message' => 'This email has already been submitted and waiting for verification', 'tip' => 'Please check your email to verify your account']);
+    }
   }
 
   /**
@@ -182,7 +192,7 @@ class UsersController {
     $tokenExpires = $user->token_expires;
     
     // check if the verification_token has expired
-    if (convertTimestamp($tokenExpires) < convertTimestamp(getTimestamp())) {
+    if (expired($tokenExpires, getTimestamp())) {
       loadView('errors/400', ['message' => 'Your verification link has expired']);
       return;
     }
@@ -195,5 +205,46 @@ class UsersController {
     // inspectAndDie($user);
 
     loadView('success/201', ['message' => 'Your account has been verified']);
+  }
+  
+  function startLogin() {
+    list($errors, $sanitizedData) = $this->senitizeLoginData();
+
+    $notice = '';
+
+    if (!empty($errors)) {
+      loadView('users/login', ['errors' => $errors, 'filledData' => $sanitizedData]);
+      return;
+    }
+
+    // find the user in the database
+    $user = $this->db->query('SELECT * FROM users WHERE email = :email', ['email' => $sanitizedData['email']])->fetch();
+
+    if (!$user || !password_verify($sanitizedData['password'], $user->password)) {
+      $notice = 'Incorrect email or password';
+      loadView('users/login', ['errors' => $errors,'filledData' => $sanitizedData, 'notice' => $notice]);
+      return;
+    }
+
+    if ($user && !$user->is_verified) {
+
+      if (expired($user->token_expires, getTimestamp())) {
+        $newVerificationToken = bin2hex(random_bytes(32));
+        $newTokenExpires = getTimestamp(5);
+        $this->db->query('UPDATE users SET verification_token = :verification_token, token_expires = :token_expires WHERE email = :email', ['verification_token' => $newVerificationToken, 'token_expires' => $newTokenExpires, 'email' => $user->email]);
+
+        Mail::sendConfirmationEmail($user->email, $newVerificationToken);
+      }
+
+      $errors['email'] = 'this email is not verified';
+
+      $notice = 'Your account is not verified. We have sent you an email to verify your account';
+      loadView('users/login', ['errors' => $errors,'filledData' => $sanitizedData, 'notice' => $notice]);
+      return;
+    }
+
+    $_SESSION['user'] = $user;
+
+    header('Location: /');
   }
 }

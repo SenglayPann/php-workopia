@@ -195,4 +195,16 @@
   function convertTimestamp($timestamp) {
     return strtotime($timestamp);
   }
+
+/**
+ * Checks if $timestamp1 is older than $timestamp2.
+ *
+ * @param string $timestamp1 The first timestamp to compare.
+ * @param string $timestamp2 The second timestamp to compare.
+ *
+ * @return bool True if $timestamp1 is older than $timestamp2, false if not.
+ */
+  function expired($timestamp1, $timestamp2) {
+    return convertTimestamp($timestamp1) < convertTimestamp($timestamp2);
+  }
 ?>
