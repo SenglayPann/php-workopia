@@ -11,6 +11,6 @@
     <div class="text-center text-3xl mb-4 font-bold border border-gray-300 p-3">
       <i class="fa fa-check-circle text-green-500"></i><?= $message ?>
     </div>
-    <a href="/auth/login" class="block text-xl text-center">Go back to Login</a>
+    <a href="/" class="block text-xl text-center">Go back to Homepage</a>
 </div>
 </section>

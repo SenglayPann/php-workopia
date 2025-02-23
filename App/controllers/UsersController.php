@@ -201,10 +201,12 @@ class UsersController {
     $params['token_expires'] = null;
     
     // update the user's account to verified and remove the verification_token
-    $user = $this->db->query('UPDATE users SET is_verified = :is_verified, token_expires = :token_expires, verification_token = null WHERE verification_token = :verification_token', $params)->fetch();
+    $this->db->query('UPDATE users SET is_verified = :is_verified, token_expires = :token_expires, verification_token = null WHERE verification_token = :verification_token', $params)->fetch();
     // inspectAndDie($user);
 
-    loadView('success/201', ['message' => 'Your account has been verified']);
+    Session::set('user', $user);
+
+    loadView('success/201', ['message' => 'Your account has been verified. You are now logged in']);
   }
   
   function startLogin() {
