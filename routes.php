@@ -16,4 +16,5 @@
   $router->post('/auth/login', 'UsersController@startLogin');
 
   $router->get('/auth/verify/{token}', 'UsersController@verify');
+  $router->post('/auth/logout', 'UsersController@logout');
 ?>

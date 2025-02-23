@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 require basePath('vendor/autoload.php');
-use Framework\Database, Framework\Validation, Framework\Mail;
+use Framework\Database, Framework\Validation, Framework\Mail, Framework\Session;
 
 class UsersController {
   public $dbConfig;
@@ -243,7 +243,15 @@ class UsersController {
       return;
     }
 
-    $_SESSION['user'] = $user;
+    Session::set('user', $user);
+    header('Location: /');
+  }
+
+  function logout() {
+    Session::clearAll();
+    $params = session_get_cookie_params();
+    // inspectAndDie(session_name());
+    setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain']);
 
     header('Location: /');
   }

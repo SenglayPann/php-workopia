@@ -1,8 +1,8 @@
 <?php
-class Session {
+namespace Framework;
 
-  public function __construct() {
-  }
+class Session {
+  
 
   /**
    * Ensures that a session is started.
@@ -11,7 +11,7 @@ class Session {
    * If none exists, it starts a new session.
    */
 
-  public static function stat() {
+  public static function start() {
     if (session_status() == PHP_SESSION_NONE) {
       session_start();
     }
