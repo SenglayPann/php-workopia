@@ -14,4 +14,6 @@
   $router->post('/auth/register', 'UsersController@signup');
   $router->get('/auth/login', 'UsersController@login');
   $router->post('/auth/login', 'UsersController@startLogin');
+
+  $router->get('/auth/verify/{token}', 'UsersController@verify');
 ?>

@@ -77,6 +77,8 @@
      * @return void
      */
     public function route($uri, $method) {
+      // inspectAndDie($_GET);
+      // inspectAndDie(explode('?',$uri));
 
       // check for _method input
       if ($method === 'POST' && isset($_POST['_method'])) {

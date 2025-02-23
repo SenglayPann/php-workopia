@@ -161,4 +161,32 @@
     header('Location: ' . $location);
     exit;
   }
+
+/**
+ * Returns the current timestamp in 'Y-m-d H:i:s' format with optional added minutes.
+ *
+ * This function generates the current timestamp and adds the specified number of
+ * extra minutes to it before formatting it as a string.
+ *
+ * @param int $extraMinutes The number of minutes to add to the current timestamp.
+ *                          Defaults to 0 if not provided.
+ * @return string The formatted timestamp with added minutes.
+ */
+
+  function getTimestamp($extraMinutes = 0) {
+    return date('Y-m-d H:i:s', time() + ($extraMinutes * 60));
+  }
+  
+  
+/**
+ * Converts the given timestamp string to a Unix timestamp.
+ *
+ * @param string $timestamp The timestamp string to convert.
+ *
+ * @return int The Unix timestamp equivalent of the given string.
+ */
+
+  function convertTimestamp($timestamp) {
+    return strtotime($timestamp);
+  }
 ?>

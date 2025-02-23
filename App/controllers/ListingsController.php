@@ -99,6 +99,11 @@
         }
       }
 
+      // check if the email is valid
+      if (!Validation::email($sanitizedData['email'])) {
+        $errors['email'] = 'Email is invalid';
+      }
+
       return [$errors, $sanitizedData];
     }
 

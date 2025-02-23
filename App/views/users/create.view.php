@@ -9,7 +9,7 @@
 ?>
 
 <?=
-  createAccountForm();
+  createAccountForm($errors ?? [], $filledData ?? [], $notice ?? null);
 ?>
 
 <?=
