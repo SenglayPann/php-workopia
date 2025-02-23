@@ -48,6 +48,17 @@
       }
     }
 
+    /**
+     * Sends a confirmation email to the specified recipient with a verification link.
+     *
+     * Constructs a verification link using the provided token and the current domain,
+     * then composes an HTML email with a link for the recipient to verify their email address.
+     * The email includes basic styling for better presentation.
+     *
+     * @param string $to The recipient's email address.
+     * @param string $token The unique verification token to be included in the link.
+     */
+
     public static function sendConfirmationEmail($to, $token) {
       // Get the current domain dynamically
       $domain = $_SERVER['HTTP_HOST']; // Example: localhost:8080 or mywebsite.com
@@ -92,8 +103,9 @@
       </head>
       <body>
         <div class='container'>
-          <div class='header'>
-            <h2>Verify your email address</h2>
+        <div class='header'>
+        <h1>Verify Wellcome to Workopia</h1>
+        <h2>Verify your email address</h2>
           </div>
           <div class='content'>
             <p>Click the link below to verify your email address:</p>

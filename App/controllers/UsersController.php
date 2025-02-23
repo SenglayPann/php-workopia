@@ -21,6 +21,12 @@ class UsersController {
     $this->db = new Database($this->dbConfig);
   }
 
+  /**
+   * Sanitizes the data from the register form and checks if the
+   * required fields are empty and if the email is valid.
+   *
+   * @return array An array containing the errors and the sanitized data
+   */
   function sanitizeData() {
     $allowedFields = ['name', 'email', 'password', 'confirmPassword', 'city', 'state'];
 
@@ -70,11 +76,19 @@ class UsersController {
    *
    * @return void
    */
-
   public function login() {
     loadView('users/login');
   }
 
+  /**
+   * Signup
+   *
+   * Handles the submission of the registration form, validates the
+   * input and either creates a new user or updates an existing user's
+   * verification token if the email is already in use.
+   *
+   * @return void
+   */
   public function signup() {
 
     list($errors, $sanitizedData) =$this->sanitizeData();
@@ -147,6 +161,12 @@ class UsersController {
 
   }
 
+  /**
+   * Verify a user's account
+   *
+   * @param array $params
+   * @return void
+   */
   public function verify($params) {
     // inspectAndDie($params);
 

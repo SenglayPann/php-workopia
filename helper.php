@@ -143,6 +143,14 @@
     });
   }
 
+/**
+ * Sanitizes the given string by removing any whitespace from the beginning
+ * and end and encoding any special characters to HTML entities.
+ *
+ * @param string $dirty The string to sanitize.
+ *
+ * @return string The sanitized string.
+ */
   function sanitize($dirty) {
     $dirty = trim($dirty);
     $sanitized = filter_var($dirty, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -172,7 +180,6 @@
  *                          Defaults to 0 if not provided.
  * @return string The formatted timestamp with added minutes.
  */
-
   function getTimestamp($extraMinutes = 0) {
     return date('Y-m-d H:i:s', time() + ($extraMinutes * 60));
   }
@@ -185,7 +192,6 @@
  *
  * @return int The Unix timestamp equivalent of the given string.
  */
-
   function convertTimestamp($timestamp) {
     return strtotime($timestamp);
   }
