@@ -4,14 +4,7 @@
   require '../helper.php';
 
   use Framework\Router;
-  // Requiring files
-  // autoLoadFrameworks();
-
-  // $dbConfig = require basePath('config/db.php');
-  // $db = new Database($dbConfig);
-
-  // $listings = $db->query('SELECT * FROM listings')->fetchAll();
-
+  
   // Instantiating the router
   $router = new Router();
 
