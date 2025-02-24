@@ -36,7 +36,7 @@
      * @return void
      */
 
-    public static function unautorized($message = 'You are not authorized to view this page'){
+    public static function unauthorized($message = 'You are not authorized to view this page'){
       http_response_code(403);
       loadView('errors', [
         'errorCode' => '403',

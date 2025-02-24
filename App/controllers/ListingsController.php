@@ -2,6 +2,7 @@
   namespace App\Controllers;
   use Framework\Database;
   use App\Controllers\ErrorsController;
+  use Framework\Session;
   use Framework\Validation;
 
   class ListingsController {
@@ -53,7 +54,7 @@
       // inspectAsJson($listings);
 
       if (!$job) {
-        ErrorsController::notFound('there is not job with this id');
+        ErrorsController::notFound('there is no job with this id');
       }
 
       loadView('listings/details', [
@@ -121,7 +122,7 @@
         return;
       }
 
-      $sanitizedData['user_id'] = 0;
+      $sanitizedData['user_id'] = Session::get('user')['id'];
 
       // insert the data into the database
 
@@ -139,34 +140,18 @@
     }
 
     function destroy($params) {
-      $id = $params['id'];
-
-      $params = [
-        'id' => $id
-      ];
-
-      $job = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
-
-      if (!$job) {
-        ErrorsController::notFound('there is not job with this id');
-      }
-
-      $_SESSION['success_message'] = 'Job deleted successfully';
 
       $this->db->query("DELETE FROM listings WHERE id = :id", $params);
+      
+      $_SESSION['success_message'] = 'Job deleted successfully';
+      Session::clear('job');
 
       redirect('/listings');
     }
 
-    function edit($params) {
+    function edit() {
 
-
-      $job = $this->db->query("SELECT * FROM listings WHERE id = :id", $params)->fetch();
-      // inspectAsJson($listings);
-
-      if (!$job) {
-        ErrorsController::notFound('there is not job with this id');
-      }
+      $job = Session::get('job');
 
       // inspectAndDie($job);
 
@@ -187,8 +172,6 @@
         ]);
         return;
       }
-
-      
 
       $id = $params['id'];
 
@@ -214,6 +197,7 @@
       $this->db->query("UPDATE listings SET $updateString WHERE id = :id", $sanitizedData);
 
       $_SESSION['success_message'] = 'Job updated successfully';
+      Session::clear('job');
 
       redirect('/listings');
     }

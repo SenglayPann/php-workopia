@@ -10,7 +10,7 @@ function navbar() {
       <nav class="space-x-4">
         <?php if (Session::has('user')) : ?>
           <div class="flex justify-between items-center gap-4">
-            <div>Logged in as: <strong><?= Session::get('user')->name ?></strong></div>
+            <div>Logged in as: <strong><?= Session::get('user')['name'] ?></strong></div>
             <form method="POST">
               <button
                 type="submit"

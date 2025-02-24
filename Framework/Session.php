@@ -23,7 +23,7 @@ class Session {
    * @param string $key The session key you want to set.
    * @param mixed $value The value to set the session key to.
    */
-  public static function  set($key, $value) {
+  public static function set($key, $value) {
     $_SESSION[$key] = $value;
   }
 
@@ -45,7 +45,6 @@ class Session {
    * @param string $key The session key to check.
    * @return bool True if the session key exists, false otherwise.
    */
-
   public static function has($key) {
     return isset($_SESSION[$key]);
   }

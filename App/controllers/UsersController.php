@@ -138,7 +138,7 @@ class UsersController {
 
     if ($existingUser && $existingUser->is_verified) {
       $errors['email'] = 'Email is already in use';
-      loadView('users/create', ['errors' => $errors, 'filledData' => $sanitizedData]);
+      loadView('users/create', ['errors' => $errors, 'filledData' => $sanitizedData, 'notice' => 'Email is already in use']);
       return;
     }
 
@@ -204,7 +204,7 @@ class UsersController {
     $this->db->query('UPDATE users SET is_verified = :is_verified, token_expires = :token_expires, verification_token = null WHERE verification_token = :verification_token', $params)->fetch();
     // inspectAndDie($user);
 
-    Session::set('user', $user);
+    Session::set('user',(array) $user);
 
     loadView('success/201', ['message' => 'Your account has been verified. You are now logged in']);
   }
@@ -245,7 +245,7 @@ class UsersController {
       return;
     }
 
-    Session::set('user', $user);
+    Session::set('user', (array) $user);
     header('Location: /');
   }
 

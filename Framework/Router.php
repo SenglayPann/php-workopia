@@ -3,10 +3,10 @@
   namespace Framework;
 
   use App\Controllers\ErrorsController;
-
+use Middlewares;
 
   class Router {
-    Protected $routes = [];
+    public $routes = [];
 
     /**
      * Registers a route by storing it in the $routes array.
@@ -16,15 +16,26 @@
      * @param string $controller The controller for the route.
      * @return void
      */
-    public function registerRoute($method, $uri, $action) {
+    public function registerRoute($method, $uri, $action, $middlewares = []) {
 
       list($controller, $controllerMethod) = explode('@', $action);
+
+      if (!empty($middlewares)) {
+        $middlewares = array_map(function($middleware) {
+          list($middleware, $middlewareMethod) = explode('@', $middleware);
+          return [
+            'middleware' => $middleware,
+            'middlewareMethod' => $middlewareMethod
+          ];
+        }, $middlewares);
+      }
     
       $this->routes[] = [
         'method' => $method,
         'uri' => $uri,
         'controller' => $controller,
-        'controllerMethod' => $controllerMethod
+        'controllerMethod' => $controllerMethod,
+        'middlewares' => $middlewares
       ];
     }
 
@@ -34,8 +45,8 @@
    * @param string $uri The URI pattern for the route.
    * @param string $controller The controller that handles the route.
    */
-    public function get($uri, $controller) {
-      $this->registerRoute('GET', $uri, $controller);
+    public function get($uri, $controller, $middlewares = []) {
+      $this->registerRoute('GET', $uri, $controller, $middlewares);
     }
 
     /**
@@ -44,8 +55,8 @@
      * @param string $uri The URI pattern for the route.
      * @param string $controller The controller that handles the route.
      */
-    public function post($uri, $controller) {
-      $this->registerRoute('POST', $uri, $controller);
+    public function post($uri, $controller, $middlewares = []) {
+      $this->registerRoute('POST', $uri, $controller, $middlewares);
     }
     
     /**
@@ -54,8 +65,8 @@
      * @param string $uri The URI pattern for the route.
      * @param string $controller The controller that handles the route.
      */
-    public function put($uri, $controller) {
-      $this->registerRoute('PUT', $uri, $controller);
+    public function put($uri, $controller, $middlewares = []) {
+      $this->registerRoute('PUT', $uri, $controller, $middlewares);
     }
     
     /**
@@ -64,8 +75,8 @@
      * @param string $uri The URI pattern for the route.
      * @param string $controller The controller that handles the route.
      */
-    public function delete($uri, $controller) {
-      $this->registerRoute('DELETE', $uri, $controller);
+    public function delete($uri, $controller, $middlewares = []) {
+      $this->registerRoute('DELETE', $uri, $controller, $middlewares);
     }
 
     /**
@@ -122,14 +133,21 @@
           }
 
           if ($match) {
-              // exstract controller and action method 
-              $controller = "App\\Controllers\\" . $route['controller'];
-              $controllerMethod = $route['controllerMethod'];
+            foreach ($route['middlewares'] as $middlewares) {
+              $middleware = "Framework\\Middlewares\\" . $middlewares['middleware'];
+              $middlewareMethod = $middlewares['middlewareMethod'];
               
-              // instantiate controller and call the action method
-              $instanceController = new $controller();
-              $instanceController->$controllerMethod($params);
-              return;
+              $middleware::$middlewareMethod($params);
+            }
+
+            // exstract controller and action method 
+            $controller = "App\\Controllers\\" . $route['controller'];
+            $controllerMethod = $route['controllerMethod'];
+            
+            // instantiate controller and call the action method
+            $instanceController = new $controller();
+            $instanceController->$controllerMethod($params);
+            return;
           }
           // inspect($params);
         }

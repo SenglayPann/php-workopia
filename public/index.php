@@ -4,6 +4,8 @@
 
   use Framework\Router, Framework\Session;
   Session::start();
+
+  // inspectAndDie($_SESSION['user']['name']);
   
   // Instantiating the router
   $router = new Router();
