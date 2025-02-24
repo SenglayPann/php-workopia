@@ -11,3 +11,4 @@
 - [Database Interaction](https://github.com/SenglayPann/php-workopia/tree/database-interaction)
 - [Project Structure and Routing Enhancement](https://github.com/SenglayPann/php-workopia/tree/project-structure-enhancement)
 - [Crud operation](https://github.com/SenglayPann/php-workopia/tree/full-crud-operation)
+- [Auth & Sessions](https://github.com/SenglayPann/php-workopia/tree/auth-and-session)
