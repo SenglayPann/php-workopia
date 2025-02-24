@@ -1,6 +1,7 @@
 <?php
 
   $router->get('/', 'HomeController@index');
+  $router->get('/search', 'ListingsController@search');
   $router->get('/listings', 'ListingsController@index');
   $router->get('/listings/create', 'ListingsController@create', ['Auth@Authenticated']);
   $router->get('/listings/edit/{id}', 'ListingsController@edit', ['OwnerShip@checkListingOwnership']);

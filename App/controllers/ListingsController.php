@@ -201,4 +201,23 @@
 
       redirect('/listings');
     }
+
+    function search() {
+      $keywords = $_GET['keywords'] ?? '';
+      $location = $_GET['location'] ?? '';
+
+      $params = [
+        'keywords' => "%$keywords%",
+        'location' => "%$location%"
+      ];
+
+      // inspectAndDie($params);
+      $listings = $this->db->query("SELECT * FROM listings WHERE (title LIKE :keywords OR description LIKE :keywords OR tags LIKE :keywords) AND (city LIKE :location OR state LIKE :location)", $params)->fetchAll();
+
+      loadView('home', [
+        'listings' => $listings,
+        'keywords' => $keywords,
+        'location' => $location
+      ]);
+    }
   }

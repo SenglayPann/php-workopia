@@ -32,7 +32,7 @@
       $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
       // inspectAsJson($listings);
 
-      loadView('listings/index', [
+      loadView('home', [
         'listings' => $listings,
       ]);
     }

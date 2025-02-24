@@ -18,7 +18,7 @@
 
   <!-- Showcase -->
   <?=
-    searchArea();
+    searchArea($keywords ?? '', $location ?? '');
   ?>
   
   <!-- Top Banner -->
@@ -28,7 +28,7 @@
 
   <!-- Job Listings -->
   <?=
-    jobList($listings, $callBack = 'seeAllJobs');
+    jobList($listings, $callBack = 'seeAllJobs', $keywords ?? '', $location ?? '');
   ?>
 
   <!-- bottom banner  -->

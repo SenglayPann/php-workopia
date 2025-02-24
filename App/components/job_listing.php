@@ -1,11 +1,15 @@
 <?php
-function jobList($jobListings, $callBack = null) {
+function jobList($jobListings, $callBack = null, $keyword = null, $location = null) {
 ?>
   <?php loadComponent('message')?>
   <section>
     <div class="container mx-auto p-4 mt-4">
       <div class="text-center text-3xl mb-4 font-bold border border-gray-300 p-3">
-        Recent Jobs
+        <?php if ($keyword || $location) :?>
+          Search results for: <?= $keyword ?> <?= $keyword ? ', ' : '' ?> <?= $location ?>
+        <?php else :?>
+          Job Listings
+        <?php endif; ?>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <?php foreach ($jobListings as $job) : ?>
